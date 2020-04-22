@@ -1,0 +1,8 @@
+[target.thumbv7em-none-eabihf]
+rustflags = [
+  "-C", "link-arg=-Tlink.x",
+#  "-C", "linker=arm-none-eabi-gcc", # ADDED. s. https://rust-embedded.github.io/blog/2018-08-2x-psa-cortex-m-breakage/
+]
+
+[build]
+target = "thumbv7em-none-eabihf"
