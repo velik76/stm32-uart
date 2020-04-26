@@ -14,29 +14,30 @@ use crate::hal::{prelude::*, stm32};
 
 #[entry]
 fn main() -> ! {
-    if let (Some(dp), Some(cp)) = (
-        stm32::Peripherals::take(),
-        cortex_m::peripheral::Peripherals::take(),
-    ) {
-        // Set up the LED. On the Nucleo-446RE it's connected to pin PA5.
-        let gpioa = dp.GPIOG.split();
-        let mut led = gpioa.pg13.into_push_pull_output();
 
-        // Set up the system clock. We want to run at 48MHz for this one.
-        let rcc = dp.RCC.constrain();
-        let clocks = rcc.cfgr.sysclk(48.mhz()).freeze();
+    let dp = stm32::Peripherals::take().unwrap();
+    let cp = cortex_m::peripheral::Peripherals::take().unwrap();
 
-        // Create a delay abstraction based on SysTick
-        let mut delay = hal::delay::Delay::new(cp.SYST, clocks);
+    let gpiog = dp.GPIOG.split();
+    let mut led1 = gpiog.pg13.into_push_pull_output();
+    let mut led2 = gpiog.pg14.into_push_pull_output();
 
-        loop {
-            // On for 1s, off for 1s.
-            led.set_high().unwrap();
-            delay.delay_ms(1000_u32);
-            led.set_low().unwrap();
-            delay.delay_ms(1000_u32);
-        }
+    // Set up the system clock
+    let rcc = dp.RCC.constrain();
+    let clocks = rcc.cfgr.sysclk(168.mhz()).freeze();
+
+    // Create a delay abstraction based on SysTick
+    let mut delay = hal::delay::Delay::new(cp.SYST, clocks);
+
+    loop {
+        led1.set_high().unwrap();
+        led2.set_low().unwrap();
+
+        delay.delay_ms(50_u32);
+
+        led1.set_low().unwrap();
+        led2.set_high().unwrap();
+
+        delay.delay_ms(50_u32);
     }
-
-    loop {}
 }
