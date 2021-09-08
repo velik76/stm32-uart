@@ -13,8 +13,7 @@ use cortex_m;
 use cortex_m_rt::entry;
 use stm32f4xx_hal as hal;
 
-use crate::hal::{prelude::*, stm32};
-use crate::hal::{prelude::*, serial::config::Config, serial::Serial};
+use crate::hal::{prelude::*, stm32, serial::config::Config, serial::Serial};
 use core::fmt::Write; // for pretty formatting of the serial output
 
 pub use cortex_m::*;
@@ -27,12 +26,6 @@ pub use crate::hal::*;
 
 extern crate cortex_m_rt as rt;
 extern crate nb;
-
-
-/*
-fn blink(led1 : stm32f4xx_hal::gpio::GPIOG::PG0<Output<PushPull>>) {
-}
-*/
 
 
 #[entry]
