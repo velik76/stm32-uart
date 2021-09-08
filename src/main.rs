@@ -13,7 +13,7 @@ use cortex_m;
 use cortex_m_rt::entry;
 use stm32f4xx_hal as hal;
 
-use crate::hal::{prelude::*, stm32, serial::config::Config, serial::Serial};
+use crate::hal::{prelude::*, stm32};
 
 pub use cortex_m::*;
 pub use cortex_m_rt::*;
@@ -53,21 +53,6 @@ fn main() -> ! {
     // Create a delay abstraction based on SysTick
     let mut delay = hal::delay::Delay::new(cp.SYST, clocks);
 
-//    let usart1 = dp.USART1;
-    let cfg = serial::config::Config::default().baudrate(115_200.bps());
-    let usart2 = dp.USART2;
-    let tx_pin = gpioa.pa2.into_alternate_af0();
-    // configure serial
-    let mut tx = Serial::tx(
-        dp.USART2,
-        tx_pin,
-        Config::default().baudrate(9600.bps()),
-        clocks,
-    )
-    .unwrap();
-    
-
-//    let mut usart2 = dp.USART2.usart(gpioa.pa2, gpioa.pa3, cfg, &mut rcc).unwrap();
 
     loop {
 //        blink(led1);
